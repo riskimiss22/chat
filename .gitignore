@@ -1,5 +1,5 @@
 /vendor/
-/node_modules/
+node_modules/
 /public/storage
 /storage/*.key
 .env
@@ -10,3 +10,4 @@ npm-debug.log
 yarn-error.log
 .DS_Store
 .wwebjs_auth/
+.wwebjs_cache/
