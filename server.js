@@ -1,21 +1,12 @@
-
 const express = require("express");
 const { Client, LocalAuth } = require("whatsapp-web.js");
 const QRCode = require("qrcode");
-const fs = require("fs");
-const https = require("https");
 const cors = require("cors");
+const http = require("http");
 const { Server } = require("socket.io");
 
 const app = express();
-
-// SSL
-const sslOptions = {
-  key: fs.readFileSync("/etc/letsencrypt/live/enagih-chat.niscala.net/privkey.pem"),
-  cert: fs.readFileSync("/etc/letsencrypt/live/enagih-chat.niscala.net/fullchain.pem"),
-};
-
-const server = https.createServer(sslOptions, app);
+const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
 app.use(cors());
@@ -214,7 +205,7 @@ app.get("/list-bot", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("🤖 Bot aktif (whatsapp-web.js + HTTPS)");
+  res.send("🤖 Bot aktif (whatsapp-web.js + HTTP, SSL by Nginx)");
 });
 
 io.on("connection", (socket) => {
@@ -230,7 +221,6 @@ io.on("connection", (socket) => {
 process.on("unhandledRejection", (reason) => console.error("⚠️ Unhandled Rejection:", reason));
 process.on("uncaughtException", (err) => console.error("🔥 Uncaught Exception:", err));
 
-server.listen(3000, () => {
-  console.log("🚀 Server berjalan di https://enagih-chat.niscala.net (HTTPS + WSS)");
+server.listen(4000, () => {
+  console.log("🚀 Server berjalan di http://localhost:4000 (SSL by Nginx → akses via https://dev-chat.e-nagih.cloud)");
 });
-
